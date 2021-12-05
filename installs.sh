@@ -1,3 +1,6 @@
+#ENV
+sudo mv ~/app/HELLO-SRE.sh /etc/profile.d/HELLO-SRE.sh
+#UPDATE
 sudo apt-get update
 #RABBITMQ
 sudo apt-get -y install rabbitmq-server
