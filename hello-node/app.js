@@ -9,7 +9,7 @@ var RABBITMQ_QUEUE = process.env.RABBITMQ_QUEUE || "hello";
 var db = mysql.createConnection({
   host:  process.env.MYSQL_HOST || "localhost",
   user: process.env.MYSQL_USER || "root",
-  password: process.env.MYSQL_PASSWORD,
+  password: process.env.MYSQL_PASSWORD || "rd2021",
   database: process.env.MYSQL_DB || "hello"
 });
 
