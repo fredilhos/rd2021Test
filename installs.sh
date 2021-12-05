@@ -6,8 +6,10 @@ sudo apt-get update
 sudo apt-get -y install rabbitmq-server
 #NPM
 sudo apt-get -y install npm
+cd ~/app/hello-node/
 sudo npm install
 sudo npm install --save amqplib
+cd ~
 #PYTHON Dep
 sudo apt-get -y install python-pip
 sudo pip install pika
