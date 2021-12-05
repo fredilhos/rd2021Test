@@ -1,9 +1,6 @@
 sudo apt-get update
 #RABBITMQ
 sudo apt-get -y install rabbitmq-server
-#APP Git
-git clone https://github.com/fredilhos/rd2021Test ~/app
-sudo chmod -R 775 ~/app
 #NPM
 sudo apt-get -y install npm
 sudo npm install
