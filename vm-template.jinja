@@ -1,0 +1,46 @@
+{% set PREFIX_NAME = env['deployment'] + '-' + env['name'] %}
+
+
+resources:
+- name: {{ PREFIX_NAME }}-it
+  type: compute.v1.instanceTemplate
+  properties:
+    properties:
+      machineType: f1-micro
+      serviceAccounts:
+        - email: default
+          scopes:
+             - https://www.googleapis.com/auth/sqlservice.admin
+             - https://www.googleapis.com/auth/cloudruntimeconfig
+             - https://www.googleapis.com/auth/ndev.cloudman
+             - https://www.googleapis.com/auth/devstorage.read_write
+             - https://www.googleapis.com/auth/datastore
+      tags:
+        items:
+        -  {{ properties["web"]["instance_tag"] }}
+      networkInterfaces:
+      - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/{{ properties["network"] }}
+        accessConfigs:
+        - name: External-IP
+          type: ONE_TO_ONE_NAT
+      disks:
+      - deviceName: boot
+        type: PERSISTENT
+        boot: true
+        autoDelete: true
+        initializeParams:
+          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20211115
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            apt-get update && apt-get install -y apache2 php7.0 php7.0-fpm libapache2-mod-php7.0 php7.0-mysql php7.0-memcache python python-pip mysql-server mysql-client npm nano node-gyp nodejs-dev libssl1.0-dev nodejs-dev node-gyp  curl composer git
+            
+            export HOME=/root
+            gcloud components update -q
+            gcloud components install beta -q
+
+            INSTANCE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/hostname -H "Metadata-Flavor: Google")
+
+            /etc/init.d/apache2 restart
